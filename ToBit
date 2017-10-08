@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+
+import os, sys
+import argparse as ap
+from convert import *
+
+
+def main():
+    parser = ap.ArgumentParser()
+    parser.add_argument('input_path', help='Input image file path', nargs='?')
+    parser.add_argument('output_path', help='Output image file path, default: tobit_output.png in current directory',
+                        nargs='?', default='./tobit_output.png')
+    parser.add_argument('-c', '--color_num', help='Number of colors in the final image, default 8.', nargs='?',
+                        type=int, default=8,
+                        const=8, dest='color_num')
+    parser.add_argument('-s', '--block_size',
+                        help='Size of pixel blocks. Larger number indicates lower resolution, default 4',
+                        nargs='?', type=int, default=4, const=4, dest='block_size')
+
+    args = parser.parse_args()
+    input_path = args.input_path
+    output_path = args.output_path
+    block_size = args.block_size
+    num_centroids = args.color_num
+    input_image = pl.imread(input_path)
+    # output_image = convert_blocks(input_image, size, 'mean')
+    # raw_clustered = cluster_pixels(input_image, size)
+    output_image = cluster_pixels(convert_blocks(input_image, block_size, 'mean'), num_centroids)
+    im = Image.fromarray(output_image.astype('uint8'), 'RGB')
+    im.save(output_path)
+
+
+if __name__ == '__main__':
+    main()
