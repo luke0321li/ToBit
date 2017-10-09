@@ -2,14 +2,13 @@
 
 import sys, os
 import numpy as np
-import pylab as pl
-import matplotlib.pyplot as plt
-from PIL import Image
+
 
 
 def color_distance(color_1, color_2, delta_e=False):
-    return np.sqrt(np.sum((color_1 - color_2) ** 2))
-
+    # return np.sqrt(np.sum((color_1 - color_2) ** 2))
+    # return np.absolute(np.sum((color_1 - color_2)))
+    return np.sqrt(np.sum((color_1 - color_2) * np.asarray([2, 4, 3]) ** 2))
 
 def cluster_pixels(image, num_centroids, max_iter=10):
     output = np.zeros(image.shape)

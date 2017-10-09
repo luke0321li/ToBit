@@ -2,6 +2,9 @@
 
 import os, sys
 import argparse as ap
+import pylab as pl
+import numpy as np
+from PIL import Image
 from convert import *
 
 
@@ -16,16 +19,30 @@ def main():
     parser.add_argument('-s', '--block_size',
                         help='Size of pixel blocks. Larger number indicates lower resolution, default 4',
                         nargs='?', type=int, default=4, const=4, dest='block_size')
+    parser.add_argument('-n', '--no_clustering', help='Skip color clustering, overrides -c option', action='store_true')
+    parser.add_argument('-r', '--reverse_pipeline', 
+                        help='Revert the pipeline order: convert to blocks first then do clustering', 
+                        action='store_true')
+
 
     args = parser.parse_args()
     input_path = args.input_path
     output_path = args.output_path
     block_size = args.block_size
     num_centroids = args.color_num
+    no_clustering = args.no_clustering
+    reverse_pipeline = args.reverse_pipeline
     input_image = pl.imread(input_path)
+    
     # output_image = convert_blocks(input_image, size, 'mean')
     # raw_clustered = cluster_pixels(input_image, size)
-    output_image = cluster_pixels(convert_blocks(input_image, block_size, 'mean'), num_centroids)
+     
+    if no_clustering:
+        output_image = convert_blocks(input_image, block_size, 'mean')       
+    elif reverse_pipeline:
+        output_image = cluster_pixels(convert_blocks(input_image, block_size, 'mean'), num_centroids)
+    else:
+        output_image = convert_blocks(cluster_pixels(input_image, num_centroids), block_size, 'mean')
     im = Image.fromarray(output_image.astype('uint8'), 'RGB')
     im.save(output_path)
 
