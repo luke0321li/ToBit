@@ -2,15 +2,18 @@
 
 import sys, os
 import numpy as np
-
+from skimage.color import rgb2lab
 
 
 def color_distance(color_1, color_2, delta_e=False):
     # return np.sqrt(np.sum((color_1 - color_2) ** 2))
     # return np.absolute(np.sum((color_1 - color_2)))
-    return np.sqrt(np.sum((color_1 - color_2) * np.asarray([2, 4, 3]) ** 2))
+    # return np.sqrt(np.sum((color_1 - color_2) * np.asarray([2, 4, 3]) ** 2))
+    color_1_lab = rgb2lab(color_1)
+    color_2_lab = rgb2lab(color_2)
+    return np.sqrt(np.sum((color_1_lab - color_2_lab) ** 2))
 
-def cluster_pixels(image, num_centroids, max_iter=10):
+def cluster_pixels(image, num_centroids, max_iter=20):
     output = np.zeros(image.shape)
     x = np.random.choice(image.shape[0], num_centroids, replace=False)
     y = np.random.choice(image.shape[1], num_centroids, replace=False)
