@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, os
+import sys, os, random
 import numpy as np
 from skimage.color import rgb2lab
 
@@ -13,7 +13,8 @@ def color_distance(color_1, color_2, delta_e=False):
     color_2_lab = rgb2lab(color_2)
     return np.sqrt(np.sum((color_1_lab - color_2_lab) ** 2))
 
-def cluster_pixels(image, num_centroids, max_iter=20):
+
+def cluster_pixels(image, num_centroids, max_iter):
     output = np.zeros(image.shape)
     x = np.random.choice(image.shape[0], num_centroids, replace=False)
     y = np.random.choice(image.shape[1], num_centroids, replace=False)
@@ -56,6 +57,21 @@ def cluster_pixels(image, num_centroids, max_iter=20):
     return output
 
 
+def get_mode_color(pixel_block):
+    colors = {}
+    for i in range(pixel_block.shape[0]):
+        for j in range(pixel_block.shape[1]):
+            if tuple(pixel_block[i, j, :]) not in colors:
+                colors[tuple(pixel_block[i, j, :])] = 1
+            else:
+                colors[tuple(pixel_block[i, j, :])] += 1
+
+    max_val = max(colors.values())
+    max_color = [color for color, value in colors.items() if value == max_val]
+    if len(max_color) > 1:
+        return random.choice(max_color)
+    return np.asarray(max_color[0]).reshape(1, 3)
+
 def convert_blocks(image, block_size, color_mode):
     if block_size > min(image.shape[0], image.shape[1]) or block_size <= 0:
         raise ValueError('Invalid block size')
@@ -69,14 +85,11 @@ def convert_blocks(image, block_size, color_mode):
             block = image[i * block_size:(i + 1) * block_size, j * block_size:(j + 1) * block_size, :]
             if color_mode == 'mean':
                 output[i, j, :] = np.mean(block, axis=(0, 1))
-            # elif color_mode == 'mode':
-            #     output[i, j, :] = np.argmax([np.bincount(x) for x in block.reshape(-1, 3).T], axis=1)
+            elif color_mode == 'mode':
+                output[i, j, :] = get_mode_color(block)
             # elif color_mode == 'max':
-            #     output[i, j, :] = np.max(block, axis=(0, 1))
+            #    output[i, j, :] = np.max(block, axis=(0, 1))
             else:
                 raise ValueError('Unknown option for color_mode')
 
     return output
-
-
-

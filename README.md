@@ -9,7 +9,8 @@ Converts images to simple pixel art, for example <br>
 
 ## Usage 
 ```
-usage: ToBit [-h] [-c [COLOR_NUM]] [-s [BLOCK_SIZE]]
+usage: ToBit [-h] [-c [COLOR_NUM]] [-s [BLOCK_SIZE]] [-i MAX_ITER] [-m] [-n]
+             [-r]
              [input_path] [output_path]
 
 positional arguments:
@@ -22,6 +23,14 @@ optional arguments:
   -c [COLOR_NUM], --color_num [COLOR_NUM]
                         Number of colors in the final image, default 8.
   -s [BLOCK_SIZE], --block_size [BLOCK_SIZE]
-                        Size of pixel blocks. Larger number indicates lower
-                        resolution, default 4
+                        Size of pixel blocks to be merged. Larger number
+                        indicates lower resolution, default 4
+  -i MAX_ITER, --max_iter MAX_ITER
+                        Maximum iterations for K-means clustering, default 20
+  -m, --mode            During block conversion, adjacent pixels are merged
+                        and the most frequent color would be kept
+  -n, --no_clustering   Skip color clustering, overrides -c option
+  -r, --reverse_pipeline
+                        Revert the pipeline order: merge adjacent pixels first
+                        then do clustering
 ```
