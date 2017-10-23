@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-import os, sys
 import argparse as ap
 import pylab as pl
-import numpy as np
 from PIL import Image
 from convert import *
 
@@ -17,16 +15,16 @@ def main():
                         type=int, default=8,
                         const=8, dest='color_num')
     parser.add_argument('-s', '--block_size',
-                        help='Size of pixel blocks to be merged. Larger number indicates lower resolution, default 4',
+                        help='Size of pixels. Larger number indicates lower resolution and fewer pixels, default 4',
                         nargs='?', type=int, default=4, const=4, dest='block_size')
-    parser.add_argument('-i', '--max_iter', help='Maximum iterations for K-means clustering, default 20', 
+    parser.add_argument('-i', '--max_iter', help='Maximum iterations for K-means clustering, default 20',
                         nargs=1, type=int, default=20, dest='max_iter')
-    parser.add_argument('-m', '--mode', help='During block conversion, adjacent pixels are merged and the \
-                        most frequent color would be kept', 
+    parser.add_argument('-m', '--mode', help='During pixel block conversion, adjacent pixels are merged and the \
+                        most frequent color would be kept',
                         action='store_true')
     parser.add_argument('-n', '--no_clustering', help='Skip color clustering, overrides -c option', action='store_true')
-    parser.add_argument('-r', '--reverse_pipeline', 
-                        help='Revert the pipeline order: merge adjacent pixels first then do clustering', 
+    parser.add_argument('-r', '--reverse_pipeline',
+                        help='Revert the pipeline order: merge adjacent pixels first then do clustering',
                         action='store_true')
 
     args = parser.parse_args()
@@ -39,15 +37,15 @@ def main():
     no_clustering = args.no_clustering
     reverse_pipeline = args.reverse_pipeline
     input_image = pl.imread(input_path)
-    
+
     # output_image = convert_blocks(input_image, size, 'mean')
     # raw_clustered = cluster_pixels(input_image, size)
-     
+
     is_mode = 'mean'
     if mode:
         is_mode = 'mode'
     if no_clustering:
-        output_image = convert_blocks(input_image, block_size, 'mean') 
+        output_image = convert_blocks(input_image, block_size, 'mean')
     elif reverse_pipeline:
         output_image = cluster_pixels(convert_blocks(input_image, block_size, 'mean'), num_centroids, max_iter)
     else:

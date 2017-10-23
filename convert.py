@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import sys, os, random
+import random
 import numpy as np
 from skimage.color import rgb2lab
 
@@ -71,6 +71,7 @@ def get_mode_color(pixel_block):
     if len(max_color) > 1:
         return random.choice(max_color)
     return np.asarray(max_color[0]).reshape(1, 3)
+
 
 def convert_blocks(image, block_size, color_mode):
     if block_size > min(image.shape[0], image.shape[1]) or block_size <= 0:
