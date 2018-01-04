@@ -3,7 +3,7 @@
 import argparse as ap
 import pylab as pl
 from PIL import Image
-from convert import *
+from src.convert import *
 
 
 def main():
