@@ -7,6 +7,9 @@ Converts images to simple pixel art, for example <br>
 ## Package dependencies
 <b>Python3</b>, NumPy, Matplotlib, PIL
 
+## How it works
+It uses <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-Means</a> clustering to reduce the number of colors (i.e. pixels with similar colors in the input image will now have the <b>same</b> color), and then merges adjacent pixels to create the blocky final image. 
+
 ## Usage 
 ```
 usage: ToBit [-h] [-c [COLOR_NUM]] [-s [BLOCK_SIZE]] [-i MAX_ITER] [-m] [-n]
