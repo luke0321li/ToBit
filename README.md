@@ -8,7 +8,7 @@ Converts images to simple pixel art, for example <br>
 <b>Python3</b>, NumPy, Matplotlib, PIL
 
 ## How it works
-It uses <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-Means</a> clustering to reduce the number of colors (i.e. pixels with similar colors in the input image will now have the <b>same</b> color), and then merges adjacent pixels to create the blocky final image. 
+It uses <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-Means</a> clustering for color segmentation (to reduce the number of colors, i.e. pixels with similar colors in the input image will now have the <b>same</b> color) in the L * a * b color space, and then merges adjacent pixels to create the blocky final image. 
 
 ## Usage 
 ```
