@@ -3,6 +3,8 @@ Converts images to simple pixel art, for example <br>
 <a href="url"><img src="https://github.com/lukevastus/ToBit/blob/master/tests/mountain.jpeg?raw=true" width="400"></a>
 <a href="url"><img src="https://github.com/lukevastus/ToBit/blob/master/tests/mountain_output_large.png?raw=true" width="400"></a>
 
+The output may have varying effects depending on the command line options.
+<a href="url"><img src="https://github.com/lukevastus/ToBit/blob/master/tests/LULsample.png?raw=true" width="300"></a>
 
 ## Package dependencies
 <b>Python3</b>, NumPy, Matplotlib, PIL
